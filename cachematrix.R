@@ -26,12 +26,12 @@
 ##      get the inverse of the "matrix".
 ##
 ## Examples
-## makeCacheMatrix()                    creates empty "matrix".
-## makeCacheMatrix(x)                   creates "matrix" initialized with x.
-## makeCacheMatrix$set(x)               sets "matrix" data to x.
-## makeCacheMatrix$get()                gets "matrix" data.
-## makeCacheMatrix$setInverse(i)        sets "matrix" inverse to i.
-## makeCacheMatrix$getInverse()         gets "matrix" inverse.
+## myMatrix <- makeCacheMatrix()        creates empty myMatrix
+## myMatrix <- makeCacheMatrix(x)       creates myMatrix initialized with x
+## myMatrix$set(x)                      sets myMatrix data to x
+## myMatrix$get()                       gets myMatrix data
+## myMatrix$setInverse(i)               sets myMatrix inverse to i
+## myMatrix$getInverse()                gets myMatrix inverse
 
 makeCacheMatrix <- function(x = matrix()) {
         inv <- NULL
@@ -42,7 +42,8 @@ makeCacheMatrix <- function(x = matrix()) {
         get <- function() x
         setInverse <- function(inverse) inv <<- inverse
         getInverse <- function() inv
-        list(set = set, get = get,
+        list(set = set,
+             get = get,
              setInverse = setInverse,
              getInverse = getInverse)
 }
@@ -72,11 +73,11 @@ cacheSolve <- function(x, ...) {
         ## inv is NULL when the inverse has not been calculated yet or
         ## the matrix has changed.
         if(!is.null(inv)) {
-                message("Getting cached data")
-                return(inv)
+                message("Getting cached inverse")
+        } else {
+                data <- x$get()
+                inv <- solve(data, ...)
+                x$setInverse(inv)                
         }
-        data <- x$get()
-        inv <- solve(data, ...)
-        x$setInverse(inv)
         inv
 }
